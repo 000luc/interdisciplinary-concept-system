@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102a2b" />
+    <meta
+      name="description"
+      content="跨学科概念系统：24 周学习计划、600 个概念、复习队列与浏览器本地进度。"
+    />
+    <title>跨学科概念系统</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23102a2b'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Arial' font-size='24' font-weight='700' fill='%23d8fff5'%3ECS%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./data.js" defer></script>
+    <script
+      src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"
+      defer
+    ></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="学习导航">
+        <a class="brand" href="#overview" aria-label="跨学科概念系统首页">
+          <span class="brand-mark" aria-hidden="true">CS</span>
+          <span class="brand-copy">
+            <strong>概念系统</strong>
+            <span>24 周学习站</span>
+          </span>
+        </a>
+
+        <nav class="main-nav" id="main-nav" aria-label="主导航">
+          <button class="nav-item is-active" type="button" data-view="overview">
+            <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+            <span>总览</span>
+          </button>
+          <button class="nav-item" type="button" data-view="today">
+            <i data-lucide="circle-play" aria-hidden="true"></i>
+            <span>今日学习</span>
+          </button>
+          <button class="nav-item" type="button" data-view="plan">
+            <i data-lucide="calendar-days" aria-hidden="true"></i>
+            <span>24 周计划</span>
+          </button>
+          <button class="nav-item" type="button" data-view="library">
+            <i data-lucide="library" aria-hidden="true"></i>
+            <span>概念库</span>
+          </button>
+          <button class="nav-item" type="button" data-view="review">
+            <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            <span>复习队列</span>
+            <span class="nav-count" id="review-nav-count" hidden>0</span>
+          </button>
+          <button class="nav-item" type="button" data-view="records">
+            <i data-lucide="notebook-pen" aria-hidden="true"></i>
+            <span>学习记录</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-status">
+          <div class="sidebar-status-row">
+            <span id="sidebar-week">第 1 周</span>
+            <strong id="sidebar-progress">0%</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="sidebar-progress-bar"></span>
+          </div>
+          <p id="sidebar-date">计划尚未开始</p>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar">
+          <div class="topbar-copy">
+            <span class="section-kicker" id="page-kicker">学习总览</span>
+            <h1 id="page-title">总览</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="button button-quiet" id="quick-export" type="button" aria-label="导出进度">
+              <i data-lucide="download" aria-hidden="true"></i>
+              <span>导出进度</span>
+            </button>
+            <button class="button button-primary" id="quick-today" type="button">
+              <i data-lucide="play" aria-hidden="true"></i>
+              <span>今日学习</span>
+            </button>
+          </div>
+        </header>
+
+        <main id="main-content" tabindex="-1">
+          <section class="view" id="view-overview" data-view-panel="overview"></section>
+          <section class="view" id="view-today" data-view-panel="today" hidden></section>
+          <section class="view" id="view-plan" data-view-panel="plan" hidden></section>
+          <section class="view" id="view-library" data-view-panel="library" hidden></section>
+          <section class="view" id="view-review" data-view-panel="review" hidden></section>
+          <section class="view" id="view-records" data-view-panel="records" hidden></section>
+        </main>
+      </div>
+    </div>
+
+    <dialog class="dialog concept-dialog" id="concept-dialog" aria-labelledby="concept-title">
+      <div id="concept-dialog-content"></div>
+    </dialog>
+
+    <dialog class="dialog confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+      <form method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <span class="section-kicker">此操作不可撤销</span>
+            <h2 id="confirm-title">确认清空进度？</h2>
+          </div>
+          <button class="icon-button" value="cancel" aria-label="关闭">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p>所有学习日、概念状态、复习安排和周复盘都会从当前浏览器删除。</p>
+        <div class="dialog-actions">
+          <button class="button button-quiet" value="cancel">取消</button>
+          <button class="button button-danger" id="confirm-reset" value="confirm">确认清空</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="storage-warning" id="storage-warning" role="alert" hidden>
+      当前浏览器无法保存进度。你仍可浏览内容，但刷新后记录会丢失。
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <noscript>
+      <div class="noscript">此学习站需要启用 JavaScript 才能显示学习内容和进度。</div>
+    </noscript>
+  </body>
+</html>

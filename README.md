@@ -4,20 +4,42 @@
 
 计划周期：2026-11-23 至 2027-05-09。
 
+## 在线学习
+
+直接打开学习站：[https://000luc.github.io/interdisciplinary-concept-system/](https://000luc.github.io/interdisciplinary-concept-system/)
+
+在线学习站支持每日任务、600 概念搜索筛选、间隔复习、周复盘及浏览器本地进度。网站不需要登录，个人进度只保存在当前浏览器。
+
 ## 第一次使用
 
-1. 打开 `learning-plan.md`，找到今天的日期和对应任务。
-2. 从 `concepts/` 打开当前领域，先阅读当日概念。
-3. 按 `practice-and-review.md` 完成案例、反例和复习。
-4. 打开 `learning-progress.xlsx`，记录实际分钟、完成状态、掌握状态和最近复习日期。
+1. 打开[在线学习站](https://000luc.github.io/interdisciplinary-concept-system/)，进入“今日学习”。
+2. 按当日任务阅读相关概念，并在概念详情中更新掌握状态。
+3. 按[练习与复习规则](practice-and-review.md)完成案例、反例和复盘。
+4. 需要离线表格时，使用[学习进度工作簿](learning-progress.xlsx)；网页进度可通过 JSON 导入导出。
 5. 每周最后一天完成周综合，再阅读一次本周概念关系图。
 
 ## 文件说明
 
-- `learning-plan.md`：24 周安排、120 个每日任务、里程碑、评分和参考资料。
-- `concepts/`：六个领域的概念库与重点概念深度卡。
-- `practice-and-review.md`：复习阶梯、每周练习、结项选题和表达要求。
-- `learning-progress.xlsx`：学习看板、每日任务、600 概念库、复习队列、周复盘和输出记录。
+- [learning-plan.md](learning-plan.md)：24 周安排、120 个每日任务、里程碑、评分和参考资料。
+- [concepts/](concepts/)：六个领域的概念库与重点概念深度卡。
+- [practice-and-review.md](practice-and-review.md)：复习阶梯、每周练习、结项选题和表达要求。
+- [learning-progress.xlsx](learning-progress.xlsx)：学习看板、每日任务、600 概念库、复习队列、周复盘和输出记录。
+
+## 本地预览与重新生成
+
+```bash
+python -m http.server 8765 --directory docs
+```
+
+打开 `http://127.0.0.1:8765/`。
+
+内容更新后重新生成数据和检查：
+
+```bash
+python scripts/build_materials.py
+python scripts/build_site_data.py
+python scripts/validate_site.py
+```
 
 ## 六领域导航
 
